@@ -1,6 +1,7 @@
 // src/models/Message.ts
 
 import { builder } from "../builder";
+import { prisma } from "../db";
 
 builder.prismaObject("Message", {
     fields: (t) => ({
@@ -11,3 +12,8 @@ builder.prismaObject("Message", {
         }),
     }),
 });
+
+builder.queryField('messages', t => t.prismaField({
+    type: ['Message'],
+    resolve: async query => prisma.message.findMany({ ...query })
+}))
